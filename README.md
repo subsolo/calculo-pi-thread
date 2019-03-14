@@ -1,1 +1,1 @@
-calculo-pi-thread
+Calculo_pi
