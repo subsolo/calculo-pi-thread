@@ -1,18 +1,24 @@
 
 public class Calculos extends Thread {
 
-	public int valores = 1000000;
-	public double pi = 3.14;
-	public double resultado = 0.0;
-	public int identificadorParImpar;
+	public double resultadoThread;
+	int valorInicio = 0;
+	int valorFinal = 0;
 	
-	public Calculos(int identificadorParImpar) {
-		this.identificadorParImpar = identificadorParImpar;
+	public Calculos(int valorInicio, int valorFinal) {
+		this.valorInicio = valorInicio;
+		this.valorFinal = valorFinal;
+		resultadoThread = 0.0;
+	}	
+	public double getResultadoThread() {
+		return this.resultadoThread;
 	}
-	
+	public void setResultadoThread(double resultadoThread) {
+		this.resultadoThread = resultadoThread;
+	}
 	public void run() {		
-		for (int i=1; i < valores; i += identificadorParImpar) {
-			resultado = (4*(i % 2 == 0 ? 1 : -1)/(2*i)+1) * pi;
+		for (int i=valorInicio; i <= valorFinal; i++) {
+			resultadoThread += (i % 2 == 0 ? 1.0 : -1.0)/((2*i)+1);
 		}
 	}
 }

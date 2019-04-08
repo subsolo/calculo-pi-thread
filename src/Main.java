@@ -2,22 +2,35 @@
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
+		int numeroThreads = 2;
+		int valoresMaximo = 1000000000;
+		int valorInicio = 0;
+		int valoresPorThreads = valoresMaximo / numeroThreads;
+		int valorFinal = valoresPorThreads;
+		double resultado = 0.0;
 		
-		Calculos threadPares = new Calculos(2);
-		threadPares.start();
+		long inicioTempo = System.nanoTime();
 		
-		Calculos threadImpares = new Calculos(1);
-		threadImpares.start();
+		Calculos[] threads = new Calculos[numeroThreads];
 		
-		threadPares.join();
-		threadImpares.join();
+		for (int i=1;i<=threads.length;i++) {
+			if (i >= 2) {
+				valorInicio = valorFinal + 1; 
+				valorFinal = valoresPorThreads * i;
+			}
+			threads[i-1] = new Calculos(valorInicio, valorFinal);
+			threads[i-1].start();
+		} 
+		for (int i=1;i<=threads.length;i++) {
+			threads[i-1].join();
+			resultado += threads[i-1].getResultadoThread();
+		}
+		resultado *= 4.0;
 		
-		double resultado = threadPares.resultado + threadImpares.resultado;
-		System.out.println("Thread Pares: "+threadPares.resultado);
-		System.out.println("Thread Impares: "+threadImpares.resultado);
+		long fimTempo = System.nanoTime();
 		
 		System.out.println("Resultado: "+ resultado);
-
+		System.out.println("Tempo de execução : " + (inicioTempo - fimTempo));
 	}
 
 }
